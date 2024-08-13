@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<TestePraticoMvc.Models.Pessoa>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista de Pessoas";
 }
 
-<h2>Index</h2>
+<h3 class="mb-6">Lista de Pessoas</h3>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-outline-primary">@Html.ActionLink("Nova Pessoa", "Create")</button>
+</div>
 <table class="table">
     <tr>
         <th>
@@ -29,7 +29,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Rg)
         </th>
-        <th></th>
+        <th>Ações</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -53,9 +53,9 @@
             @Html.DisplayFor(modelItem => item.Rg)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Visualizar", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Deletar", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

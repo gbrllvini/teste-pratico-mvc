@@ -8,21 +8,17 @@ using TestePraticoMvc.Models;
 
 namespace TestePraticoMvc.Controllers
 {
+    [RoutePrefix("pessoas")]
     public class PessoasController : Controller
     {
         private PessoasContext db = new PessoasContext();
-
         public ActionResult Index()
         {
             return View(db.Pessoas.ToList());
         }
-
-        public ActionResult Details(Guid? id)
+        [Route("detalhes/{id:Guid}")]
+        public ActionResult Details(Guid id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Pessoa pessoa = db.Pessoas.Find(id);
             if (pessoa == null)
             {
@@ -30,13 +26,15 @@ namespace TestePraticoMvc.Controllers
             }
             return View(pessoa);
         }
-
+        [Route("nova")]
         public ActionResult Create()
         {
             return View();
         }
 
+
         [HttpPost]
+        [Route("nova")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
@@ -51,6 +49,7 @@ namespace TestePraticoMvc.Controllers
             return View(pessoa);
         }
 
+        [Route("editar/{id:Guid}")]
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -66,6 +65,7 @@ namespace TestePraticoMvc.Controllers
         }
 
         [HttpPost]
+        [Route("editar/{id:Guid}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
@@ -77,13 +77,9 @@ namespace TestePraticoMvc.Controllers
             }
             return View(pessoa);
         }
-
-        public ActionResult Delete(Guid? id)
+        [Route("excluir/{id:Guid}")]
+        public ActionResult Delete(Guid id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Pessoa pessoa = db.Pessoas.Find(id);
             if (pessoa == null)
             {
@@ -93,6 +89,7 @@ namespace TestePraticoMvc.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
+        [Route("excluir/{id:Guid}")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {

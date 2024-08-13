@@ -11,15 +11,12 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary">
         <div class="container">
-            @Html.ActionLink("ASP.NET MVC CRUD", "Index", "Pessoas", new { area = "" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("CRUD - Pessoas", "Index", "Pessoas", new { area = "" }, new { @class = "navbar-brand" })
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar a navegação" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Pessoas", "Index", "Pessoas", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
             </div>
         </div>
     </nav>
@@ -27,7 +24,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Meu Aplicativo ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Gabriell Braz - Teste Prático MVC</p>
         </footer>
     </div>
 

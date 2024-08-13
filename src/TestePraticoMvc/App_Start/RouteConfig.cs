@@ -13,6 +13,9 @@ namespace TestePraticoMvc
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // Habilitar o roteamento por atributos
+            routes.MapMvcAttributeRoutes();
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
