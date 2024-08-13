@@ -26,6 +26,7 @@ namespace TestePraticoMvc.Models
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Selecione uma opção válida para o campo {0}.")]
+        [Display(Name = "Estado Civil")]
         public string EstadoCivil { get; set; }
         public string Cpf { get; set; }
         public string Rg { get; set; }
