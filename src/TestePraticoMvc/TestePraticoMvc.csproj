@@ -136,6 +136,10 @@
     <Compile Include="Migrations\202408131520139_InitialCreate.Designer.cs">
       <DependentUpon>202408131520139_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202408132025462_AdicionaDACpfRg.cs" />
+    <Compile Include="Migrations\202408132025462_AdicionaDACpfRg.Designer.cs">
+      <DependentUpon>202408132025462_AdicionaDACpfRg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Pessoa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -227,6 +231,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202408131520139_InitialCreate.resx">
       <DependentUpon>202408131520139_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202408132025462_AdicionaDACpfRg.resx">
+      <DependentUpon>202408132025462_AdicionaDACpfRg.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
