@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using TestePraticoMvc.BLL.Validacoes;
 
 namespace TestePraticoMvc.Models
 {
@@ -31,11 +32,12 @@ namespace TestePraticoMvc.Models
         public string EstadoCivil { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "O campo {0} precisa ter {1} caracteres.")]
+        [StringLength(11, MinimumLength = 11)]
+        [Cpf]
         public string Cpf { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-        [StringLength(9, MinimumLength = 9, ErrorMessage = "O campo {0} precisa ter {1} caracteres.")]
+        [StringLength(9, MinimumLength = 9)]
         public string Rg { get; set; }
     }
 }

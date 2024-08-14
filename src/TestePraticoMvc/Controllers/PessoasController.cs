@@ -2,7 +2,9 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using TestePraticoMvc.BLL;
 using TestePraticoMvc.DAL;
 using TestePraticoMvc.Models;
 
@@ -12,6 +14,14 @@ namespace TestePraticoMvc.Controllers
     public class PessoasController : Controller
     {
         private readonly PessoasContext db = new PessoasContext();
+        private readonly PessoasBLL _service;
+
+        public PessoasController(PessoasContext db, PessoasBLL service)
+        {
+            this.db = db;
+            _service = service;
+        }
+
         public ActionResult Index()
         {
             return View(db.Pessoas.ToList());
@@ -36,14 +46,13 @@ namespace TestePraticoMvc.Controllers
         [HttpPost]
         [Route("nova")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
-                pessoa.Id = Guid.NewGuid();
-                db.Pessoas.Add(pessoa);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                var resposta = await _service.Create(pessoa);
+                return resposta;
             }
 
             return View(pessoa);
