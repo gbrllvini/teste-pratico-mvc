@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,26 +13,26 @@ namespace TestePraticoMvc.BLL
 {
     public class PessoasBLL
     {
-        private readonly PessoasContext _context;
+        private readonly PessoasContext _context = new PessoasContext();
 
-        public PessoasBLL(PessoasContext context)
-        {
-            _context = context;
-        }
 
         public async Task<List<Pessoa>> Get()
         {
-            var pessoas = await _context.Pessoas.ToListAsync();
+            var pessoas = await _context.Pessoas
+                                           .AsNoTracking()
+                                           .ToListAsync();
             return pessoas;
         }
 
         public async Task<Pessoa> Exists(Guid id)
         {
-            var pessoa = await _context.Pessoas.FindAsync(id);
+            var pessoa = await _context.Pessoas
+                                          .AsNoTracking()
+                                          .FirstOrDefaultAsync(p=> p.Id == id);
             return pessoa;
         }
 
-        public Resposta Create(Pessoa pessoa)
+        public async Task<Resposta> Create(Pessoa pessoa)
         {
             var existeCpf = CpfExists(pessoa.Cpf);
 
@@ -44,26 +45,51 @@ namespace TestePraticoMvc.BLL
             pessoa.Id = Guid.NewGuid();
 
             _context.Pessoas.Add(pessoa);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return new Resposta { Sucesso = true, Mensagem = "" }; 
         }
 
-        public Resposta Edit (Pessoa pessoa)
+        public async Task<Resposta> Edit (Pessoa pessoaEditada)
         {
-            var existeCpf = CpfExists(pessoa.Cpf);
+            Pessoa pessoaAnterior = await _context.Pessoas
+                                                    .AsNoTracking()
+                                                    .FirstOrDefaultAsync(p => p.Id == pessoaEditada.Id);
 
-            if (existeCpf) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+            if(pessoaAnterior.Cpf != pessoaEditada.Cpf)
+            {
+                var existeCpf = CpfExists(pessoaEditada.Cpf);
+                if (existeCpf) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+            }
 
-            var existeRg = RgExists(pessoa.Rg);
-
-            if (existeRg) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
-
-            _context.Entry(pessoa).State = EntityState.Modified;
-            _context.SaveChanges();
+            if(pessoaAnterior.Rg != pessoaEditada.Rg)
+            {
+                var existeRg = RgExists(pessoaEditada.Rg);
+                if (existeRg) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+            }
+    
+            _context.Entry(pessoaEditada).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
             return new Resposta { Sucesso = true, Mensagem = "" };
         }
+
+        public async Task<Resposta> Delete(Guid id)
+        {
+            var pessoa = await _context.Pessoas.FindAsync(id);
+            if (pessoa == null) return new Resposta { Sucesso = false, Mensagem = "Essa pessoa não existe ou já foi removida." };
+
+            _context.Pessoas.Remove(pessoa);
+            await _context.SaveChangesAsync();
+
+            return new Resposta { Sucesso = true, Mensagem = "" };
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
+
         private bool CpfExists (string cpf)
         {
             var existe = _context.Pessoas.Any(p => p.Cpf == cpf);

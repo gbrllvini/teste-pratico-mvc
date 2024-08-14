@@ -13,12 +13,7 @@ namespace TestePraticoMvc.Controllers
     [RoutePrefix("pessoas")]
     public class PessoasController : Controller
     {
-        private readonly PessoasBLL _service;
-
-        public PessoasController(PessoasBLL service)
-        {
-            _service = service;
-        }
+        private readonly PessoasBLL _service = new PessoasBLL();
 
         public async Task<ActionResult> Index()
         {
@@ -47,18 +42,22 @@ namespace TestePraticoMvc.Controllers
         [HttpPost]
         [Route("nova")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
-                var resposta = _service.Create(pessoa);
+                var resposta = await _service.Create(pessoa);
 
-                if(!resposta.Sucesso) return Json(resposta);
+                if (!resposta.Sucesso)
+                {
+                    ModelState.AddModelError(string.Empty, resposta.Mensagem);
+                    return View(pessoa);
+                }
 
                 return RedirectToAction("Index");
             }
 
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            return View(pessoa);
         }
 
         [Route("editar/{id:Guid}")]
@@ -75,17 +74,21 @@ namespace TestePraticoMvc.Controllers
         [HttpPost]
         [Route("editar/{id:Guid}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
-                var resposta = _service.Edit(pessoa);
+                var resposta = await _service.Edit(pessoa);
 
-                if (!resposta.Sucesso) return Json(resposta);
+                if (!resposta.Sucesso)
+                {
+                    ModelState.AddModelError(string.Empty, resposta.Mensagem);
+                    return View(pessoa);
+                }
 
                 return RedirectToAction("Index");
             }
-            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+            return View(pessoa);
         }
         [Route("excluir/{id:Guid}")]
         public async Task<ActionResult> Delete(Guid id)
@@ -101,11 +104,14 @@ namespace TestePraticoMvc.Controllers
         [HttpPost, ActionName("Delete")]
         [Route("excluir/{id:Guid}")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            //Pessoa pessoa = db.Pessoas.Find(id);
-           // db.Pessoas.Remove(pessoa);
-           // db.SaveChanges();
+            var resposta = await _service.Delete(id);
+            if (!resposta.Sucesso)
+            {
+                return HttpNotFound();
+            }
+         
             return RedirectToAction("Index");
         }
 
@@ -113,7 +119,7 @@ namespace TestePraticoMvc.Controllers
         {
             if (disposing)
             {
-            //    db.Dispose();
+                _service.Dispose();
             }
             base.Dispose(disposing);
         }
