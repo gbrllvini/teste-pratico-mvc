@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TestePraticoMvc.BLL;
-using TestePraticoMvc.DAL;
 using TestePraticoMvc.Models;
 
 namespace TestePraticoMvc.Controllers
@@ -13,29 +13,30 @@ namespace TestePraticoMvc.Controllers
     [RoutePrefix("pessoas")]
     public class PessoasController : Controller
     {
-        private readonly PessoasContext db = new PessoasContext();
         private readonly PessoasBLL _service;
 
-        public PessoasController(PessoasContext db, PessoasBLL service)
+        public PessoasController(PessoasBLL service)
         {
-            this.db = db;
             _service = service;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(db.Pessoas.ToList());
+            List<Pessoa> resposta = await _service.Get();
+            return View(resposta);
         }
+
         [Route("detalhes/{id:Guid}")]
-        public ActionResult Details(Guid id)
+        public async Task<ActionResult> Details(Guid id)
         {
-            Pessoa pessoa = db.Pessoas.Find(id);
+            Pessoa pessoa = await _service.Exists(id);
             if (pessoa == null)
             {
                 return HttpNotFound();
             }
             return View(pessoa);
         }
+
         [Route("nova")]
         public ActionResult Create()
         {
@@ -46,26 +47,24 @@ namespace TestePraticoMvc.Controllers
         [HttpPost]
         [Route("nova")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
+        public ActionResult Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
+                var resposta = _service.Create(pessoa);
 
-                var resposta = await _service.Create(pessoa);
-                return resposta;
+                if(!resposta.Sucesso) return Json(resposta);
+
+                return RedirectToAction("Index");
             }
 
-            return View(pessoa);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
         }
 
         [Route("editar/{id:Guid}")]
-        public ActionResult Edit(Guid? id)
+        public async Task<ActionResult> Edit(Guid id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Pessoa pessoa = db.Pessoas.Find(id);
+            Pessoa pessoa = await _service.Exists(id);
             if (pessoa == null)
             {
                 return HttpNotFound();
@@ -80,16 +79,18 @@ namespace TestePraticoMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pessoa).State = EntityState.Modified;
-                db.SaveChanges();
+                var resposta = _service.Edit(pessoa);
+
+                if (!resposta.Sucesso) return Json(resposta);
+
                 return RedirectToAction("Index");
             }
-            return View(pessoa);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
         }
         [Route("excluir/{id:Guid}")]
-        public ActionResult Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            Pessoa pessoa = db.Pessoas.Find(id);
+            Pessoa pessoa = await _service.Exists(id);
             if (pessoa == null)
             {
                 return HttpNotFound();
@@ -102,9 +103,9 @@ namespace TestePraticoMvc.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
         {
-            Pessoa pessoa = db.Pessoas.Find(id);
-            db.Pessoas.Remove(pessoa);
-            db.SaveChanges();
+            //Pessoa pessoa = db.Pessoas.Find(id);
+           // db.Pessoas.Remove(pessoa);
+           // db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -112,7 +113,7 @@ namespace TestePraticoMvc.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+            //    db.Dispose();
             }
             base.Dispose(disposing);
         }

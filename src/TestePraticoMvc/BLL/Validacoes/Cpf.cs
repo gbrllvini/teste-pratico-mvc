@@ -32,8 +32,7 @@ namespace TestePraticoMvc.BLL.Validacoes
             cpf = cpf.Trim();
             cpf = cpf.Replace(".", "").Replace("-", "");
 
-            if (cpf.Length != 11)
-                return false;
+            if (cpf.Length != 11) return false;
 
             tempCpf = cpf.Substring(0, 9);
             soma = 0;
@@ -42,10 +41,8 @@ namespace TestePraticoMvc.BLL.Validacoes
                 soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
             resto = soma % 11;
 
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
+            if (resto < 2) resto = 0;
+            else resto = 11 - resto;
 
             digito = resto.ToString();
             tempCpf = tempCpf + digito;
@@ -55,10 +52,8 @@ namespace TestePraticoMvc.BLL.Validacoes
                 soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
             resto = soma % 11;
 
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
+            if (resto < 2) resto = 0;
+            else resto = 11 - resto;
 
             digito = digito + resto.ToString();
             return cpf.EndsWith(digito);

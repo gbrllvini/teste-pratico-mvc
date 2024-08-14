@@ -33,6 +33,7 @@ namespace TestePraticoMvc.Models
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(11, MinimumLength = 11)]
+        //DataAnnotation customizada para validação de CPF  (BLL > Validacoes > Cpf.cs)
         [Cpf]
         public string Cpf { get; set; }
 
