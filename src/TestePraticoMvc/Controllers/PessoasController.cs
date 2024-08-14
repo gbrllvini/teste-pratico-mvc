@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using TestePraticoMvc.Data;
+using TestePraticoMvc.DAL;
 using TestePraticoMvc.Models;
 
 namespace TestePraticoMvc.Controllers
@@ -11,7 +11,7 @@ namespace TestePraticoMvc.Controllers
     [RoutePrefix("pessoas")]
     public class PessoasController : Controller
     {
-        private PessoasContext db = new PessoasContext();
+        private readonly PessoasContext db = new PessoasContext();
         public ActionResult Index()
         {
             return View(db.Pessoas.ToList());

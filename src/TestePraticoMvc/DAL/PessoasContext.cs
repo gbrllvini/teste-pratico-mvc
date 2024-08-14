@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using TestePraticoMvc.Models;
 
-namespace TestePraticoMvc.Data
+namespace TestePraticoMvc.DAL
 {
     public class PessoasContext : DbContext
     {

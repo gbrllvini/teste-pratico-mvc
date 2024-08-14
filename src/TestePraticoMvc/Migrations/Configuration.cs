@@ -1,11 +1,8 @@
 ﻿namespace TestePraticoMvc.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TestePraticoMvc.Data.PessoasContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TestePraticoMvc.DAL.PessoasContext>
     {
         public Configuration()
         {
@@ -13,7 +10,7 @@
             ContextKey = "TestePraticoMvc.Data.PessoasContext";
         }
 
-        protected override void Seed(TestePraticoMvc.Data.PessoasContext context)
+        protected override void Seed(TestePraticoMvc.DAL.PessoasContext context)
         {
             //  This method will be called after migrating to the latest version.
 
