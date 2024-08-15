@@ -18,14 +18,7 @@ namespace TestePraticoMvc.Controllers
 
         public ActionResult Index()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> Get()
-        {
-            List<Pessoa> resposta = await _service.Get();
-            return Json(resposta, JsonRequestBehavior.AllowGet);
+            return View("Index");
         }
 
         [Route("detalhes/{id:Guid}")]
@@ -36,27 +29,13 @@ namespace TestePraticoMvc.Controllers
             {
                 return HttpNotFound();
             }
-            return View(pessoa);
+            return View("Details");
         }
 
         [Route("nova")]
         public ActionResult Create()
         {
-            return View();
-        }
-
-        [HttpPost]
-        [Route("nova")]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
-        {
-            if (ModelState.IsValid)
-            {
-                var resposta = await _service.Create(pessoa);
-
-                return Json(new { resposta.Sucesso, resposta.Mensagem });
-            }
-
-            return Json(new { Sucesso = false, Mensagem = "Verifique os campos e tente novamente." });
+            return View("Create");
         }
 
         [Route("editar/{id:Guid}")]
@@ -68,6 +47,24 @@ namespace TestePraticoMvc.Controllers
                 return HttpNotFound();
             }
             return View("Edit");
+        }
+
+        [Route("excluir/{id:Guid}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            Pessoa pessoa = await _service.Exists(id, "excluir");
+            if (pessoa == null)
+            {
+                return HttpNotFound();
+            }
+            return View(pessoa);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Get()
+        {
+            List<Pessoa> resposta = await _service.Get();
+            return Json(resposta, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -84,6 +81,20 @@ namespace TestePraticoMvc.Controllers
         }
 
         [HttpPost]
+        [Route("nova")]
+        public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
+        {
+            if (ModelState.IsValid)
+            {
+                var resposta = await _service.Create(pessoa);
+
+                return Json(new { resposta.Sucesso, resposta.Mensagem });
+            }
+
+            return Json(new { Sucesso = false, Mensagem = "Verifique os campos e tente novamente." });
+        }
+
+        [HttpPost]
         [Route("editar/{id:Guid}")]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
@@ -95,17 +106,6 @@ namespace TestePraticoMvc.Controllers
             }
 
             return Json(new { Sucesso = false, Mensagem = "Formato de dados inválido." });
-        }
-
-        [Route("excluir/{id:Guid}")]
-        public async Task<ActionResult> Delete(Guid id)
-        {
-            Pessoa pessoa = await _service.Exists(id, "excluir");
-            if (pessoa == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pessoa);
         }
 
         [HttpPost, ActionName("Delete")]

@@ -1,66 +1,21 @@
-﻿@model TestePraticoMvc.Models.Pessoa
+﻿﻿@model TestePraticoMvc.Models.Pessoa
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Visualizar pessoa";
 }
 
-<h2>Details</h2>
+<a href="/pessoas/index" class="my-auto"><i class="fas fa-arrow-left"></i></a>
+<h2 class="text-center p-2 mt-2 bg-secondary text-white round-1">Detalhes - <span data-bind="text: nome"></span>&nbsp;<span data-bind="text: sobrenome"></span></h2>
 
-<div>
-    <h4>Pessoa</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Sobrenome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Sobrenome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DataNascimento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DataNascimento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EstadoCivil)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EstadoCivil)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Cpf)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cpf)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rg)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Rg)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<section class="mt-5">
+    <div class="row">
+            <span class="d-none col-12 mb-3" data-bind="text: id" />
+            <span class="fw-bold col-12 col-md-3 mb-3">Nome: <span data-bind="text: nome" ></span></span>
+            <span class="fw-bold col-12 col-md-3 mb-3">Sobrenome: <span data-bind="text: sobrenome" class="fw-lighter"></span></span>
+            <span class="fw-bold col-12 col-md-3 mb-3">Data de nascimento: <span data-bind="text: dataNascimento" class="fw-lighter" ></span></span>
+            <span class="fw-bold col-12 col-md-3 mb-3">Estado Civil: <span data-bind="text: estadoCivil" class="fw-lighter"></span></span>
+            <span class="fw-bold col-12 col-md-3 mb-3">CPF: <span data-bind="text: cpf" class="fw-lighter"></span></span>
+            <span class="fw-bold col-12 col-md-3 mb-3">RG: <span data-bind="text: rg" class="fw-lighter"></span></span>
+            <button class="btn btn-secondary fw-bold col-12 mb-3">Editar</button>
+    </div>
+</section>
