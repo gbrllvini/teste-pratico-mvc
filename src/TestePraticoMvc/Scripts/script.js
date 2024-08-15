@@ -43,7 +43,7 @@ $(document).ready(function () {
         },
 
          // getById
-        loadPessoa: function (id) {
+        loadPessoaForm: function (id) {
             $.ajax({
                 url: '/pessoas/pessoa/' + id,
                 type: 'GET',
@@ -58,6 +58,35 @@ $(document).ready(function () {
                     viewModel.estadoCivil(pessoa.EstadoCivil);
                     viewModel.cpf(pessoa.Cpf);
                     viewModel.rg(pessoa.Rg);
+                },
+                error: function (xhr, status, error) {
+                    alert("Erro ao carregar pessoa: " + error);
+                }
+            });
+        },
+
+        loadPessoaList: function (id) {
+            $.ajax({
+                url: '/pessoas/pessoa/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (pessoa) {
+                    viewModel.id(pessoa.Id);
+                    console.log("id: " + viewModel.id());
+                    viewModel.nome(pessoa.Nome);
+                    console.log("Nome: " + viewModel.nome());
+                    viewModel.sobrenome(pessoa.Sobrenome);
+                    console.log("Sobrenome: " + viewModel.sobrenome());
+                    viewModel.dataNascimento(
+                        viewModel.formataDataList(pessoa.DataNascimento)
+                    );
+                    console.log("data: " + viewModel.dataNascimento());
+                    viewModel.estadoCivil(pessoa.EstadoCivil);
+                    console.log("estado civil: " + viewModel.estadoCivil());
+                    viewModel.cpf(pessoa.Cpf);
+                    console.log("cpf: " + viewModel.cpf());
+                    viewModel.rg(pessoa.Rg);
+                    console.log("Nome: " + viewModel.id());
                 },
                 error: function (xhr, status, error) {
                     alert("Erro ao carregar pessoa: " + error);
@@ -139,14 +168,26 @@ $(document).ready(function () {
         },
 
         formataDataForm: function (dateString) {
-            var timestamp = parseInt(dateString.replace(/\/Date\((\d+)\)\//, '$1'), 10);
-            var date = new Date(timestamp);
+            // checa se esta no formato dd/mm/yyyy
+            var regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+            var match = dateString.match(regex);
 
-            var ano = date.getFullYear();
-            var mes = ("0" + (date.getMonth() + 1)).slice(-2); 
-            var dia = ("0" + date.getDate()).slice(-2);
+            if (match) {
+                var dia = match[1];
+                var mes = match[2];
+                var ano = match[3];
+                return ano + '-' + mes + '-' + dia;
+            } else {
+                // If not in dd/mm/yyyy format, assume it's a timestamp and process as before
+                var timestamp = parseInt(dateString.replace(/\/Date\((\d+)\)\//, '$1'), 10);
+                var date = new Date(timestamp);
 
-            return ano + '-' + mes + '-' + dia;
+                ano = date.getFullYear();
+                mes = ("0" + (date.getMonth() + 1)).slice(-2);
+                dia = ("0" + date.getDate()).slice(-2);
+
+                return ano + '-' + mes + '-' + dia;
+            }
         },
     };
 
@@ -157,7 +198,7 @@ $(document).ready(function () {
     if (window.location.pathname.startsWith('/pessoas/editar/')) {
         var pessoaId = sessionStorage.getItem("Id");
         if (pessoaId) {
-            viewModel.loadPessoa(pessoaId);
+            viewModel.loadPessoaForm(pessoaId);
         } else {
             alert("Id da pessoa não encontrado.");
         }
@@ -167,7 +208,7 @@ $(document).ready(function () {
     if (window.location.pathname.startsWith('/pessoas/detalhes/')) {
         var pessoaId = sessionStorage.getItem("Id");
         if (pessoaId) {
-            viewModel.loadPessoa(pessoaId);
+            viewModel.loadPessoaList(pessoaId);
         } else {
             alert("Id da pessoa não encontrado.");
         }
@@ -177,7 +218,7 @@ $(document).ready(function () {
     if (window.location.pathname.startsWith('/pessoas/excluir/')) {
         var pessoaId = sessionStorage.getItem("Id");
         if (pessoaId) {
-            viewModel.loadPessoa(pessoaId);
+            viewModel.loadPessoaList(pessoaId);
         } else {
             alert("Id da pessoa não encontrado.");
         }
