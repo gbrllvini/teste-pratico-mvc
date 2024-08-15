@@ -10,7 +10,7 @@ $(document).ready(function () {
         rg: ko.observable(""),
 
 
-        // rotas
+        // redirect
         detalhes: function (id) {
             sessionStorage.setItem("Id", id);
             window.location.href = '/pessoas/detalhes/' + id;
@@ -36,8 +36,8 @@ $(document).ready(function () {
                     });
                     viewModel.pessoas(pessoasList);                 
                 },
-                error: function (xhr, status, error) {
-                    alert("Erro ao exibir lista de pessoas: " + error);
+                error: function () {
+                    alert("Erro ao exibir lista de pessoas.");
                 }
             });
         },
@@ -59,8 +59,8 @@ $(document).ready(function () {
                     viewModel.cpf(pessoa.Cpf);
                     viewModel.rg(pessoa.Rg);
                 },
-                error: function (xhr, status, error) {
-                    alert("Erro ao carregar pessoa: " + error);
+                error: function () {
+                    alert("Erro ao carregar pessoa." );
                 }
             });
         },
@@ -81,8 +81,8 @@ $(document).ready(function () {
                     viewModel.cpf(pessoa.Cpf);
                     viewModel.rg(pessoa.Rg);
                 },
-                error: function (xhr, status, error) {
-                    alert("Erro ao carregar pessoa: " + error);
+                error: function () {
+                    alert("Erro ao carregar pessoa.");
                 }
             });
         },
@@ -146,6 +146,26 @@ $(document).ready(function () {
                 },
                 error: function () {
                     alert("Erro ao editar pessoa, verifique os dados e tente novamente." );
+                }
+            });
+        },
+
+        // delete
+        deletePessoa: function (id) {
+            $.ajax({
+                url: '/pessoas/excluir/' + id,
+                type: 'POST',
+                dataType: 'json',
+                success: function (resposta) {
+                    if (resposta.Sucesso) {
+                        alert("Pessoa removida com sucesso!");
+                        window.location.href = '/pessoas/index/'
+                    } else {
+                        alert("Erro ao remover pessoa: " + resposta.Mensagem);
+                    }
+                },
+                error: function () {
+                    alert("Erro ao remover pessoa.");
                 }
             });
         },

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using TestePraticoMvc.Models;
 
 namespace TestePraticoMvc.DAL

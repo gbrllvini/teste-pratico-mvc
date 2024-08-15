@@ -1,72 +1,21 @@
-﻿@model TestePraticoMvc.Models.Pessoa
+﻿﻿@model TestePraticoMvc.Models.Pessoa
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Excluir pessoa";
 }
 
-<h2>Delete</h2>
+<a href="/pessoas/index" class="my-auto"><i class="fas fa-arrow-left"></i></a>
+<h2 class="text-center p-2 mt-2 bg-danger text-white round-1 shadow-sm">Excluir <span data-bind="text: nome"></span>&nbsp;<span data-bind="text: sobrenome"></span>&nbsp;?</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Pessoa</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Sobrenome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Sobrenome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DataNascimento)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DataNascimento)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EstadoCivil)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EstadoCivil)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Cpf)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cpf)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rg)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Rg)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
+<div class="row mt-5">
+    <span class="d-none col-12 mb-3" data-bind="text: id"></span>
+    <span class="fw-bold col-12 col-md-3 mb-3">Nome: <span data-bind="text: nome" class="fw-lighter fs-5"></span></span>
+    <span class="fw-bold col-12 col-md-3 mb-3">Sobrenome: <span data-bind="text: sobrenome" class="fw-lighter fs-5"></span></span>
+    <span class="fw-bold col-12 col-md-3 mb-3">Data de Nasc.: <span data-bind="text: dataNascimento" class="fw-lighter fs-5"></span></span>
+    <span class="fw-bold col-12 col-md-3 mb-3">Estado Civil: <span data-bind="text: estadoCivil" class="fw-lighter fs-5"></span></span>
+    <span class="fw-bold col-12 col-md-3 mb-3">CPF: <span data-bind="text: cpf" class="fw-lighter fs-5"></span></span>
+    <span class="fw-bold col-12 col-md-3 mb-3">RG: <span data-bind="text: rg" class="fw-lighter fs-5"></span></span>
+    <div class="col-12 mb-3 text-end">
+        <button class="btn btn-danger fw-bold shadow-sm" data-bind="click: $root.deletePessoa.bind($data, id())">Excluir</button>
+    </div>
 </div>

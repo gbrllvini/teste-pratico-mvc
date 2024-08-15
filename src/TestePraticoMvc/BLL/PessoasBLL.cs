@@ -1,12 +1,9 @@
-﻿using Microsoft.Ajax.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web;
 using TestePraticoMvc.DAL;
 using TestePraticoMvc.Models;
 using TestePraticoMvc.Utils;
@@ -22,7 +19,9 @@ namespace TestePraticoMvc.BLL
         {
             var pessoas = await _context.Pessoas
                                            .AsNoTracking()
+                                           .OrderBy(p=> p.Nome)
                                            .ToListAsync();
+
             foreach (var pessoa in pessoas)
             {
                 // entrega dados formatados

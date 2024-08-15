@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TestePraticoMvc.BLL;
 using TestePraticoMvc.Models;
-using TestePraticoMvc.Utils;
 
 namespace TestePraticoMvc.Controllers
 {
@@ -110,7 +106,6 @@ namespace TestePraticoMvc.Controllers
 
         [HttpPost, ActionName("Delete")]
         [Route("excluir/{id:Guid}")]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             var resposta = await _service.Delete(id);

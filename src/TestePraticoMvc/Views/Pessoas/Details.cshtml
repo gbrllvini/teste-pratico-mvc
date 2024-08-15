@@ -5,7 +5,7 @@
 }
 
 <a href="/pessoas/index" class="my-auto"><i class="fas fa-arrow-left"></i></a>
-<h2 class="text-center p-2 mt-2 bg-secondary text-white round-1">Detalhes - <span data-bind="text: nome"></span>&nbsp;<span data-bind="text: sobrenome"></span></h2>
+<h2 class="text-center p-2 mt-2 bg-secondary text-white round-1 shadow-sm">Detalhes - <span data-bind="text: nome"></span>&nbsp;<span data-bind="text: sobrenome"></span></h2>
 
 <div class="row mt-5">
     <span class="d-none col-12 mb-3" data-bind="text: id"></span>
@@ -16,7 +16,6 @@
     <span class="fw-bold col-12 col-md-3 mb-3">CPF: <span data-bind="text: cpf" class="fw-lighter fs-5"></span></span>
     <span class="fw-bold col-12 col-md-3 mb-3">RG: <span data-bind="text: rg" class="fw-lighter fs-5"></span></span>
     <div class="col-12 mb-3 text-end">
-        <button class="btn btn-secondary" data-bind="click: $root.editar.bind($data, id())">Editar</button>
-
+        <button class="btn btn-secondary fw-bold shadow-sm" data-bind="click: $root.editar.bind($data, id())">Editar</button>
     </div>
 </div>
