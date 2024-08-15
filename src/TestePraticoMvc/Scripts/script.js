@@ -206,31 +206,19 @@ $(document).ready(function () {
      // carrega pessoa no formulario de edicao
     if (window.location.pathname.startsWith('/pessoas/editar/')) {
         var pessoaId = sessionStorage.getItem("Id");
-        if (pessoaId) {
-            viewModel.loadPessoaForm(pessoaId);
-        } else {
-            alert("Id da pessoa não encontrado.");
-        }
+        return pessoaId ? viewModel.loadPessoaForm(pessoaId) : alert("Id da pessoa não encontrado.");
     }
 
     // carrega pessoa na tela de detalhes
     if (window.location.pathname.startsWith('/pessoas/detalhes/')) {
         var pessoaId = sessionStorage.getItem("Id");
-        if (pessoaId) {
-            viewModel.loadPessoaList(pessoaId);
-        } else {
-            alert("Id da pessoa não encontrado.");
-        }
+        return pessoaId ? viewModel.loadPessoaList(pessoaId) : alert("Id da pessoa não encontrado.");
     }
 
     // carrega pessoa na tela de delete
     if (window.location.pathname.startsWith('/pessoas/excluir/')) {
         var pessoaId = sessionStorage.getItem("Id");
-        if (pessoaId) {
-            viewModel.loadPessoaList(pessoaId);
-        } else {
-            alert("Id da pessoa não encontrado.");
-        }
+        return pessoaId ? viewModel.loadPessoaList(pessoaId) : alert("Id da pessoa não encontrado.");
     }
 
     $('#cpf').mask('000.000.000-00', { reverse: true });
