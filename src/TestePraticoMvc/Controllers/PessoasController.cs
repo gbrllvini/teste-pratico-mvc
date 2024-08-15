@@ -12,6 +12,7 @@ namespace TestePraticoMvc.Controllers
     {
         private readonly PessoasBLL _service = new PessoasBLL();
 
+        #region VIEWS
         public ActionResult Index()
         {
             return View("Index");
@@ -55,7 +56,9 @@ namespace TestePraticoMvc.Controllers
             }
             return View(pessoa);
         }
+        #endregion
 
+        #region REQUESTS
         [HttpGet]
         public async Task<ActionResult> Get()
         {
@@ -112,6 +115,7 @@ namespace TestePraticoMvc.Controllers
 
             return Json(new { resposta.Sucesso, resposta.Mensagem });
         }
+        #endregion
 
         protected override void Dispose(bool disposing)
         {
