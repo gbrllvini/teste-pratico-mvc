@@ -15,10 +15,16 @@ namespace TestePraticoMvc.Controllers
     {
         private readonly PessoasBLL _service = new PessoasBLL();
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Get()
         {
             List<Pessoa> resposta = await _service.Get();
-            return View(resposta);
+            return Json(resposta, JsonRequestBehavior.AllowGet);
         }
 
         [Route("detalhes/{id:Guid}")]
