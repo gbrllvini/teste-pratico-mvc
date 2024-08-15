@@ -39,7 +39,6 @@ namespace TestePraticoMvc.BLL
                                           .FirstOrDefaultAsync(p=> p.Id == id);
 
             if (acao != "excluir") {
-
                 // entrega dados formatados
                 pessoa.Cpf = FormataCpf(pessoa.Cpf);
                 pessoa.Rg = FormataRg(pessoa.Rg);
@@ -61,7 +60,7 @@ namespace TestePraticoMvc.BLL
 
             pessoa.Id = Guid.NewGuid();
 
-            // padroniza cadastro no backend
+            // padroniza cadastro no banco de dados
             pessoa.Nome = PadronizaCadastro(pessoa.Nome);
             pessoa.Sobrenome = PadronizaCadastro(pessoa.Sobrenome);
 
@@ -175,7 +174,7 @@ namespace TestePraticoMvc.BLL
 
         private static string PadronizaCadastro(string value)
         {
-            return char.ToUpper(value[0]) + value.Substring(1);
+            return char.ToUpper(value[0]) + value.Substring(1).ToLower();
         }
 
         private static string FormataCpf(string cpf)
