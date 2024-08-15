@@ -5,10 +5,10 @@
 }
 
 <a href="/pessoas/index" class="my-auto"><i class="fas fa-arrow-left"></i></a>
-<h2 class="text-center p-2 mt-2 bg-warning text-black round-1">Editar - <span data-bind="value: nome"></span></h2>
+<h2 class="text-center p-2 mt-2 bg-warning text-black round-1">Editar - <span data-bind="text: nome"></span>&nbsp;<span data-bind="text: sobrenome"></span></h2>
 
 <section class="mt-5">
-    <form class="row">
+    <form class="row" data-bind="submit: editPessoa">
         <input type="hidden" disabled data-bind="value: id" />
         <div class="col-12 col-md-3 mb-3">
             <label for="nome" class="form-label text-capitalize">Nome:</label>

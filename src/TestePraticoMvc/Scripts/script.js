@@ -42,6 +42,29 @@ $(document).ready(function () {
             });
         },
 
+         // getById
+        loadPessoa: function (id) {
+            $.ajax({
+                url: '/pessoas/pessoa/' + id,
+                type: 'GET',
+                dataType: 'json',
+                success: function (pessoa) {
+                    viewModel.id(pessoa.Id);
+                    viewModel.nome(pessoa.Nome);
+                    viewModel.sobrenome(pessoa.Sobrenome);
+                    viewModel.dataNascimento(
+                        viewModel.formataDataForm(pessoa.DataNascimento)
+                    );
+                    viewModel.estadoCivil(pessoa.EstadoCivil);
+                    viewModel.cpf(pessoa.Cpf);
+                    viewModel.rg(pessoa.Rg);
+                },
+                error: function (xhr, status, error) {
+                    alert("Erro ao carregar pessoa: " + error);
+                }
+            });
+        },
+
         // create
         createPessoa: function () {
             var novaPessoa = {
@@ -74,25 +97,33 @@ $(document).ready(function () {
             
         },
 
-        // carrega pessoa específica
-        loadPessoa: function (id) {
+        // edit
+        editPessoa: function(){
+            var pessoaEditada = {
+                Id: viewModel.id(),
+                Nome: viewModel.nome(),
+                Sobrenome: viewModel.sobrenome(),
+                DataNascimento: viewModel.dataNascimento(),
+                EstadoCivil: viewModel.estadoCivil(),
+                Cpf: viewModel.removeMask(viewModel.cpf()),
+                Rg: viewModel.removeMask(viewModel.rg())
+            };
             $.ajax({
-                url: '/pessoas/pessoa/' + id,
-                type: 'GET',
+                url: '/pessoas/editar/' + viewModel.id(),
+                type: 'POST',
                 dataType: 'json',
-                success: function (pessoa) {
-                    viewModel.id(pessoa.Id);
-                    viewModel.nome(pessoa.Nome);
-                    viewModel.sobrenome(pessoa.Sobrenome);
-                    viewModel.dataNascimento(
-                        viewModel.formataDataForm(pessoa.DataNascimento)
-                    );
-                    viewModel.estadoCivil(pessoa.EstadoCivil);
-                    viewModel.cpf(pessoa.Cpf);
-                    viewModel.rg(pessoa.Rg);
+                data: pessoaEditada,
+               
+                success: function (resposta) {
+                    if (resposta.Sucesso) {
+                        alert("Pessoa editada com sucesso!");
+                        window.location.href = '/pessoas/index/'
+                    } else {
+                        alert("Erro ao editar pessoa: " + resposta.Mensagem);
+                    }
                 },
-                error: function (xhr, status, error) {
-                    alert("Erro ao carregar pessoa: " + error);
+                error: function () {
+                    alert("Erro ao editar pessoa, verifique os dados e tente novamente." );
                 }
             });
         },
