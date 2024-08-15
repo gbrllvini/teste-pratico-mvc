@@ -47,7 +47,7 @@ namespace TestePraticoMvc.BLL
             _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
 
-            return new Resposta { Sucesso = true, Mensagem = "" }; 
+            return new Resposta { Sucesso = true, Mensagem = "Pessoa criada com sucesso." }; 
         }
 
         public async Task<Resposta> Edit (Pessoa pessoaEditada)
@@ -71,7 +71,7 @@ namespace TestePraticoMvc.BLL
             _context.Entry(pessoaEditada).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return new Resposta { Sucesso = true, Mensagem = "" };
+            return new Resposta { Sucesso = true, Mensagem = "Pessoa editada com sucesso." };
         }
 
         public async Task<Resposta> Delete(Guid id)
@@ -82,7 +82,7 @@ namespace TestePraticoMvc.BLL
             _context.Pessoas.Remove(pessoa);
             await _context.SaveChangesAsync();
 
-            return new Resposta { Sucesso = true, Mensagem = "" };
+            return new Resposta { Sucesso = true, Mensagem = "Pessoa removida com sucesso." };
         }
 
         public void Dispose()

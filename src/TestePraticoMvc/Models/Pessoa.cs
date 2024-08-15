@@ -39,6 +39,8 @@ namespace TestePraticoMvc.Models
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(9, MinimumLength = 9)]
+        //DataAnnotation customizada para validação de RG  (BLL > Validacoes > Rg.cs)
+        [Rg]
         public string Rg { get; set; }
     }
 }

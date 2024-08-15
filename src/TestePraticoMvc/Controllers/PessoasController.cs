@@ -38,7 +38,6 @@ namespace TestePraticoMvc.Controllers
             return View();
         }
 
-
         [HttpPost]
         [Route("nova")]
         [ValidateAntiForgeryToken]
@@ -90,6 +89,7 @@ namespace TestePraticoMvc.Controllers
             }
             return View(pessoa);
         }
+
         [Route("excluir/{id:Guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {

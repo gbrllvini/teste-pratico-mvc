@@ -129,6 +129,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BLL\PessoasBLL.cs" />
     <Compile Include="BLL\Validacoes\Cpf.cs" />
+    <Compile Include="BLL\Validacoes\Rg.cs" />
     <Compile Include="Controllers\PessoasController.cs" />
     <Compile Include="DAL\PessoasContext.cs" />
     <Compile Include="Global.asax.cs">
