@@ -31,7 +31,7 @@ namespace TestePraticoMvc.Controllers
         [Route("detalhes/{id:Guid}")]
         public async Task<ActionResult> Details(Guid id)
         {
-            Pessoa pessoa = await _service.Exists(id);
+            Pessoa pessoa = await _service.Exists(id, "detalhes");
             if (pessoa == null)
             {
                 return HttpNotFound();
@@ -56,13 +56,13 @@ namespace TestePraticoMvc.Controllers
                 return Json(new { resposta.Sucesso, resposta.Mensagem });
             }
 
-            return Json(new { Sucesso = false, Mensagem = "Formato de dados inválido." });
+            return Json(new { Sucesso = false, Mensagem = "Verifique os campos e tente novamente." });
         }
 
         [Route("editar/{id:Guid}")]
         public async Task<ActionResult> Edit(Guid id)
         {
-            Pessoa pessoa = await _service.Exists(id);
+            Pessoa pessoa = await _service.Exists(id, "editar");
             if (pessoa == null)
             {
                 return HttpNotFound();
@@ -74,7 +74,7 @@ namespace TestePraticoMvc.Controllers
         [Route("pessoa/{id:Guid}")]
         public async Task<ActionResult> GetById(Guid id)
         {
-            Pessoa pessoa = await _service.Exists(id);
+            Pessoa pessoa = await _service.Exists(id, "pessoa");
             if (pessoa == null)
             {
                 return HttpNotFound();
@@ -100,7 +100,7 @@ namespace TestePraticoMvc.Controllers
         [Route("excluir/{id:Guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            Pessoa pessoa = await _service.Exists(id);
+            Pessoa pessoa = await _service.Exists(id, "excluir");
             if (pessoa == null)
             {
                 return HttpNotFound();

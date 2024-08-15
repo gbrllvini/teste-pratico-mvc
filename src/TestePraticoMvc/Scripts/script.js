@@ -34,8 +34,7 @@ $(document).ready(function () {
                    pessoasList.forEach(function (pessoa) {
                        pessoa.DataNascimento = viewModel.formataDataList(pessoa.DataNascimento);
                     });
-                    viewModel.pessoas(pessoasList); 
-                   
+                    viewModel.pessoas(pessoasList);                 
                 },
                 error: function (xhr, status, error) {
                     alert("Erro ao exibir lista de pessoas: " + error);
@@ -50,8 +49,8 @@ $(document).ready(function () {
                 Sobrenome: viewModel.sobrenome(),
                 DataNascimento: viewModel.dataNascimento(),
                 EstadoCivil: viewModel.estadoCivil(),
-                Cpf: viewModel.cpf(),
-                Rg: viewModel.rg()
+                Cpf: viewModel.removeMask(viewModel.cpf()),
+                Rg: viewModel.removeMask(viewModel.rg())
             };
             $.ajax({
                 url: '/pessoas/nova',
@@ -67,8 +66,8 @@ $(document).ready(function () {
                         alert("Erro ao cadastrar pessoa: " + resposta.Mensagem);
                     }
                 },
-                error: function (xhr, status, error) {
-                    alert("Erro ao cadastrar pessoa." , error);
+                error: function () {
+                    alert("Erro ao cadastrar pessoa, verifique os dados e tente novamente." );
                 }
 
             });
@@ -96,6 +95,10 @@ $(document).ready(function () {
                     alert("Erro ao carregar pessoa: " + error);
                 }
             });
+        },
+
+        removeMask: function(value) {
+           return value.replace(/\D/g, '');
         },
 
         formataDataList: function (dateString) {

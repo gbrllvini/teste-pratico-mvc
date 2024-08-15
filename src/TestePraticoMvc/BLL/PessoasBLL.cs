@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
@@ -22,14 +23,30 @@ namespace TestePraticoMvc.BLL
             var pessoas = await _context.Pessoas
                                            .AsNoTracking()
                                            .ToListAsync();
+            foreach (var pessoa in pessoas)
+            {
+                // entrega dados formatados
+                pessoa.Cpf = FormataCpf(pessoa.Cpf);
+                pessoa.Rg = FormataRg(pessoa.Rg);
+            }
+
             return pessoas;
         }
 
-        public async Task<Pessoa> Exists(Guid id)
+        public async Task<Pessoa> Exists(Guid id, string acao)
         {
             var pessoa = await _context.Pessoas
                                           .AsNoTracking()
                                           .FirstOrDefaultAsync(p=> p.Id == id);
+
+            if (acao != "excluir") {
+
+                // entrega dados formatados
+                pessoa.Cpf = FormataCpf(pessoa.Cpf);
+                pessoa.Rg = FormataRg(pessoa.Rg);
+
+            }
+
             return pessoa;
         }
 
@@ -44,6 +61,10 @@ namespace TestePraticoMvc.BLL
             if(!rgValido.Sucesso) return new Resposta { Sucesso = false, Mensagem = rgValido.Mensagem };
 
             pessoa.Id = Guid.NewGuid();
+
+            // padroniza cadastro no backend
+            pessoa.Nome = PadronizaCadastro(pessoa.Nome);
+            pessoa.Sobrenome = PadronizaCadastro(pessoa.Sobrenome);
 
             _context.Pessoas.Add(pessoa);
             await _context.SaveChangesAsync();
@@ -68,7 +89,10 @@ namespace TestePraticoMvc.BLL
                 var rgValido = await ValidaRg(pessoaEditada.Rg);
                 if (!rgValido.Sucesso) return new Resposta { Sucesso = false, Mensagem = rgValido.Mensagem };
             }
-    
+
+            pessoaEditada.Nome = PadronizaCadastro(pessoaEditada.Nome);
+            pessoaEditada.Sobrenome = PadronizaCadastro(pessoaEditada.Sobrenome);
+
             _context.Entry(pessoaEditada).State = EntityState.Modified;
             await _context.SaveChangesAsync();
              return new Resposta { Sucesso = true, Mensagem = "Pessoa editada com sucesso." };
@@ -148,6 +172,21 @@ namespace TestePraticoMvc.BLL
             if (existe) return new Resposta { Sucesso = false, Mensagem = "RG já cadastrado." };
 
             return new Resposta { Sucesso = true, Mensagem = "RG validado." }; ;
+        }
+
+        private static string PadronizaCadastro(string value)
+        {
+            return char.ToUpper(value[0]) + value.Substring(1);
+        }
+
+        private static string FormataCpf(string cpf)
+        {
+            return $"{cpf.Substring(0, 3)}.{cpf.Substring(3, 3)}.{cpf.Substring(6, 3)}-{cpf.Substring(9, 2)}";
+        }
+
+        public static string FormataRg(string rg)
+        {
+            return $"{rg.Substring(0, 2)}.{rg.Substring(2, 3)}.{rg.Substring(5, 3)}-{rg.Substring(8, 1)}";
         }
 
     }

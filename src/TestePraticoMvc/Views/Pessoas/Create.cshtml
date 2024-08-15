@@ -17,7 +17,7 @@
         </div>
         <div class="col-12 col-md-3 mb-3">
             <label for="sobrenome" class="form-label">Sobrenome:</label>
-            <input id="sobrenome" required="required" type="text" class="form-control" placeholder="Digite" data-bind="value: sobrenome">
+            <input id="sobrenome" required="required" type="text" class="form-control text-capitalize" placeholder="Digite" data-bind="value: sobrenome">
         </div>
         <div class="col-12 col-md-3 mb-3">
             <label for="dataNascimento" class="form-label">Data de Nascimento:</label>
@@ -25,8 +25,7 @@
         </div>
         <div class="col-12 col-md-3 mb-3">
             <label for="estadoCivil" class="form-label">Estado Civil:</label>
-            <select id="estadoCivil" class="form-select" required="required" data-bind="value: estadoCivil">
-                <option selected>Selecione</option>
+            <select id="estadoCivil" class="form-select" required="required" data-bind="value: estadoCivil" placeholder="Selecione">
                 <option value="Solteiro(a)">Solteiro(a)</option>
                 <option value="Casado(a)">Casado(a)</option>
                 <option value="Divorciado(a)">Divorciado(a)</option>

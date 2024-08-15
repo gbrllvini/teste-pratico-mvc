@@ -11,11 +11,11 @@
     <form class="row">
         <input type="hidden" disabled data-bind="value: id" />
         <div class="col-12 col-md-3 mb-3">
-            <label for="nome" class="form-label">Nome:</label>
+            <label for="nome" class="form-label text-capitalize">Nome:</label>
             <input id="nome" required="required" type="text" class="form-control" placeholder="Digite" data-bind="value: nome">
         </div>
         <div class="col-12 col-md-3 mb-3">
-            <label for="sobrenome" class="form-label">Sobrenome:</label>
+            <label for="sobrenome" class="form-label text-capitalize">Sobrenome:</label>
             <input id="sobrenome" required="required" type="text" class="form-control" placeholder="Digite" data-bind="value: sobrenome">
         </div>
         <div class="col-12 col-md-3 mb-3">
@@ -25,7 +25,6 @@
         <div class="col-12 col-md-3 mb-3">
             <label for="estadoCivil" class="form-label">Estado Civil:</label>
             <select id="estadoCivil" class="form-select" required="required" data-bind="value: estadoCivil">
-                <option selected>Selecione</option>
                 <option value="Solteiro(a)">Solteiro(a)</option>
                 <option value="Casado(a)">Casado(a)</option>
                 <option value="Divorciado(a)">Divorciado(a)</option>
