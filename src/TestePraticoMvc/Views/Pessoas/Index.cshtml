@@ -9,33 +9,34 @@
     <a href="/pessoas/nova" class="btn btn-success text-white">Nova Pessoa</a>
 </div>
 
-<table class="table table-hover table-bordered">
-    <thead>
-        <tr class="table-primary p-6 text-lg">
-            <th>Nome</th>
-            <th>Sobrenome</th>
-            <th>Data de Nascimento</th>
-            <th>Estado Civil</th>
-            <th>CPF</th>
-            <th>RG</th>
-            <th class="text-center">Ações</th>
-        </tr>
-    </thead>
-    <tbody data-bind="foreach: pessoas">
-        <tr>
-            <td data-bind="text: Nome"></td>
-            <td data-bind="text: Sobrenome"></td>
-            <td data-bind="text: DataNascimento"></td>
-            <td data-bind="text: EstadoCivil"></td>
-            <td data-bind="text: Cpf"></td>
-            <td data-bind="text: Rg"></td>
-            <td class="text-center">
-                <button class="btn btn-secondary text-xs" data-bind="click: $root.detalhes.bind($data, Id)"><i class="fas fa-eye"></i></button>
-                <button class="btn btn-warning text-xs" data-bind="click: $root.editar.bind($data, Id)"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger text-xs" data-bind="click: $root.excluir.bind($data, Id)"><i class="fas fa-trash-alt"></i></button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
+<section class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead class="text-lg fs-5">
+            <tr class="table-primary">
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th class="">Data de Nascimento</th>
+                <th>Estado Civil</th>
+                <th>CPF</th>
+                <th>RG</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: pessoas">
+            <tr class="text-capitalize fw-semibold">
+                <td data-bind="text: Nome"></td>
+                <td data-bind="text: Sobrenome"></td>
+                <td data-bind="text: DataNascimento"></td>
+                <td data-bind="text: EstadoCivil"></td>
+                <td data-bind="text: Cpf"></td>
+                <td data-bind="text: Rg"></td>
+                <td class="text-center">
+                    <button class="btn btn-secondary py-1 px-2 text-xs" data-bind="click: $root.detalhes.bind($data, Id)"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-warning py-1 px-2 text-xs" data-bind="click: $root.editar.bind($data, Id)"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger py-1 px-2 text-xs" data-bind="click: $root.excluir.bind($data, Id)"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
 

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using TestePraticoMvc.BLL.Validacoes;
 
 namespace TestePraticoMvc.Models
 {
@@ -33,14 +29,10 @@ namespace TestePraticoMvc.Models
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(11, MinimumLength = 11)]
-        //DataAnnotation customizada para validação de CPF  (BLL > Validacoes > Cpf.cs)
-        [Cpf]
         public string Cpf { get; set; }
 
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(9, MinimumLength = 9)]
-        //DataAnnotation customizada para validação de RG  (BLL > Validacoes > Rg.cs)
-        [Rg]
         public string Rg { get; set; }
     }
 }

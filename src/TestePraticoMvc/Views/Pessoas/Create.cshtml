@@ -1,4 +1,4 @@
-﻿@model TestePraticoMvc.Models.Pessoa
+﻿﻿@model TestePraticoMvc.Models.Pessoa
 
 @{
     ViewBag.Title = "Cadastrar nova pessoa";
@@ -6,75 +6,43 @@
 
 
 
-    <span class="my-auto">@Html.ActionLink("Voltar", "Index")</span>
-    <h2 class="text-center">Cadastrar nova pessoa</h2>
+<a href="/pessoas/index" class="my-auto"><i class="fas fa-arrow-left"></i></a>
+<h2 class="text-center p-2 mt-2 bg-success text-white round-1">Cadastrar nova pessoa</h2>
 
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
-            </div>
+<section class="mt-5">
+    <form class="row" data-bind="submit: createPessoa">
+        <div class="col-12 col-md-3 mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input id="nome" required="required" type="text" class="form-control" placeholder="Digite" data-bind="value: nome">
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Sobrenome, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Sobrenome, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Sobrenome, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-12 col-md-3 mb-3">
+            <label for="sobrenome" class="form-label">Sobrenome:</label>
+            <input id="sobrenome" required="required" type="text" class="form-control" placeholder="Digite" data-bind="value: sobrenome">
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-12 col-md-3 mb-3">
+            <label for="dataNascimento" class="form-label">Data de Nascimento:</label>
+            <input id="dataNascimento" required="required" type="date" class="form-control" data-bind="value: dataNascimento">
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EstadoCivil, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EstadoCivil, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EstadoCivil, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-12 col-md-3 mb-3">
+            <label for="estadoCivil" class="form-label">Estado Civil:</label>
+            <select id="estadoCivil" class="form-select" required="required" data-bind="value: estadoCivil">
+                <option selected>Selecione</option>
+                <option value="Solteiro(a)">Solteiro(a)</option>
+                <option value="Casado(a)">Casado(a)</option>
+                <option value="Divorciado(a)">Divorciado(a)</option>
+                <option value="Viuvo(a)">Viúvo(a)</option>
+            </select>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Cpf, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Cpf, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Cpf, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-12 col-md-3 mb-3">
+            <label for="cpf" class="form-label">CPF:</label>
+            <input id="cpf" required="required" type="text" class="form-control" maxlength="14" placeholder="Apenas CPF válido." data-bind="value: cpf">
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Rg, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Rg, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Rg, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-12 col-md-3 mb-3">
+            <label for="rg" class="form-label">RG:</label>
+            <input id="rg" required="required" type="text" class="form-control" maxlength="12" placeholder="Apenas RG válido" data-bind="value: rg">
         </div>
-
-        <div class="form-group mt-4"> 
-            <div class="col-12 text-end">
-                <input type="submit" value="Cadastrar" class="btn btn-success" />
-            </div>
+        <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success">Cadastrar</button>
         </div>
-    </div>
-}
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    </form>
+</section>

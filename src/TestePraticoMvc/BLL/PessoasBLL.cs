@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using TestePraticoMvc.DAL;
@@ -34,13 +35,13 @@ namespace TestePraticoMvc.BLL
 
         public async Task<Resposta> Create(Pessoa pessoa)
         {
-            var existeCpf = CpfExists(pessoa.Cpf);
+            var cpfValido = await ValidaCpf(pessoa.Cpf);
 
-            if (existeCpf) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+            if (!cpfValido.Sucesso) return new Resposta { Sucesso = false, Mensagem = cpfValido.Mensagem };
 
-            var existeRg = RgExists(pessoa.Rg);
+            var rgValido = await ValidaRg(pessoa.Rg);
 
-            if(existeRg) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+            if(!rgValido.Sucesso) return new Resposta { Sucesso = false, Mensagem = rgValido.Mensagem };
 
             pessoa.Id = Guid.NewGuid();
 
@@ -58,20 +59,19 @@ namespace TestePraticoMvc.BLL
 
             if(pessoaAnterior.Cpf != pessoaEditada.Cpf)
             {
-                var existeCpf = CpfExists(pessoaEditada.Cpf);
-                if (existeCpf) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+                var cpfValido = await ValidaCpf(pessoaEditada.Cpf);
+                if (!cpfValido.Sucesso) return new Resposta { Sucesso = false, Mensagem = cpfValido.Mensagem };
             }
 
             if(pessoaAnterior.Rg != pessoaEditada.Rg)
             {
-                var existeRg = RgExists(pessoaEditada.Rg);
-                if (existeRg) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." };
+                var rgValido = await ValidaRg(pessoaEditada.Rg);
+                if (!rgValido.Sucesso) return new Resposta { Sucesso = false, Mensagem = rgValido.Mensagem };
             }
     
             _context.Entry(pessoaEditada).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-            return new Resposta { Sucesso = true, Mensagem = "Pessoa editada com sucesso." };
+             return new Resposta { Sucesso = true, Mensagem = "Pessoa editada com sucesso." };
         }
 
         public async Task<Resposta> Delete(Guid id)
@@ -90,16 +90,64 @@ namespace TestePraticoMvc.BLL
             _context.Dispose();
         }
 
-        private bool CpfExists (string cpf)
+        private async Task<Resposta> ValidaCpf (string cpf)
         {
-            var existe = _context.Pessoas.Any(p => p.Cpf == cpf);
-            return existe;
+            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            string tempCpf;
+            string digito;
+
+            int soma;
+            int resto;
+
+            cpf = cpf.Trim();
+            cpf = cpf.Replace(".", "").Replace("-", "");
+
+            if (cpf.Length != 11) return new Resposta { Sucesso = false, Mensagem = "O CPF precisa ter 11 números." }; 
+
+            var existe = await _context.Pessoas.AnyAsync(p => p.Cpf == cpf);
+            if (existe) return new Resposta { Sucesso = false, Mensagem = "CPF já cadastrado." }; 
+
+            tempCpf = cpf.Substring(0, 9);
+            soma = 0;
+
+            for (int i = 0; i < 9; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
+            resto = soma % 11;
+
+            if (resto < 2) resto = 0;
+            else resto = 11 - resto;
+
+            digito = resto.ToString();
+            tempCpf = tempCpf + digito;
+            soma = 0;
+
+            for (int i = 0; i < 10; i++)
+                soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
+            resto = soma % 11;
+
+            if (resto < 2) resto = 0;
+            else resto = 11 - resto;
+
+            digito = digito + resto.ToString();
+            if(!cpf.EndsWith(digito)) return new Resposta { Sucesso = false, Mensagem = "CPF inválido." };
+            return new Resposta { Sucesso = true, Mensagem = "CPF validado." };
         }
 
-        private bool RgExists (string rg) 
+        private async Task<Resposta> ValidaRg (string rg) 
         {
-            var existe = _context.Pessoas.Any(p=>p.Rg == rg);
-            return existe;
+            rg = rg.Trim();
+            rg = rg.Replace(".", "").Replace("-", "");
+
+            if (!Regex.IsMatch(rg, @"^\d+$")) return new Resposta { Sucesso = false, Mensagem = "Formato de RG inválido." }; 
+
+            if (rg.Length != 9) return new Resposta { Sucesso = false, Mensagem = "O RG precisa ter 9 números." };
+
+            var existe = await _context.Pessoas.AnyAsync(p => p.Rg == rg);
+            if (existe) return new Resposta { Sucesso = false, Mensagem = "RG já cadastrado." };
+
+            return new Resposta { Sucesso = true, Mensagem = "RG validado." }; ;
         }
 
     }

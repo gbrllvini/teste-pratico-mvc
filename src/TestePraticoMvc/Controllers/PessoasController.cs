@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using TestePraticoMvc.BLL;
 using TestePraticoMvc.Models;
+using TestePraticoMvc.Utils;
 
 namespace TestePraticoMvc.Controllers
 {
@@ -46,23 +47,16 @@ namespace TestePraticoMvc.Controllers
 
         [HttpPost]
         [Route("nova")]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
                 var resposta = await _service.Create(pessoa);
 
-                if (!resposta.Sucesso)
-                {
-                    ModelState.AddModelError(string.Empty, resposta.Mensagem);
-                    return View(pessoa);
-                }
-
-                return RedirectToAction("Index");
+                return Json(new { resposta.Sucesso, resposta.Mensagem });
             }
 
-            return View(pessoa);
+            return Json(new { Sucesso = false, Mensagem = "Formato de dados inválido." });
         }
 
         [Route("editar/{id:Guid}")]
@@ -78,22 +72,16 @@ namespace TestePraticoMvc.Controllers
 
         [HttpPost]
         [Route("editar/{id:Guid}")]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Nome,Sobrenome,DataNascimento,EstadoCivil,Cpf,Rg")] Pessoa pessoa)
         {
             if (ModelState.IsValid)
             {
                 var resposta = await _service.Edit(pessoa);
 
-                if (!resposta.Sucesso)
-                {
-                    ModelState.AddModelError(string.Empty, resposta.Mensagem);
-                    return View(pessoa);
-                }
-
-                return RedirectToAction("Index");
+                return Json(new { resposta.Sucesso, resposta.Mensagem });
             }
-            return View(pessoa);
+
+            return Json(new { Sucesso = false, Mensagem = "Formato de dados inválido." });
         }
 
         [Route("excluir/{id:Guid}")]
@@ -113,12 +101,8 @@ namespace TestePraticoMvc.Controllers
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             var resposta = await _service.Delete(id);
-            if (!resposta.Sucesso)
-            {
-                return HttpNotFound();
-            }
-         
-            return RedirectToAction("Index");
+
+            return Json(new { resposta.Sucesso, resposta.Mensagem });
         }
 
         protected override void Dispose(bool disposing)
