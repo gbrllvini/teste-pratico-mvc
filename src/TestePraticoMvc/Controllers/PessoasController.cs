@@ -67,7 +67,20 @@ namespace TestePraticoMvc.Controllers
             {
                 return HttpNotFound();
             }
-            return View(pessoa);
+            return View("Edit");
+        }
+
+        [HttpGet]
+        [Route("pessoa/{id:Guid}")]
+        public async Task<ActionResult> GetById(Guid id)
+        {
+            Pessoa pessoa = await _service.Exists(id);
+            if (pessoa == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Json(pessoa, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
