@@ -72,21 +72,14 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (pessoa) {
                     viewModel.id(pessoa.Id);
-                    console.log("id: " + viewModel.id());
                     viewModel.nome(pessoa.Nome);
-                    console.log("Nome: " + viewModel.nome());
                     viewModel.sobrenome(pessoa.Sobrenome);
-                    console.log("Sobrenome: " + viewModel.sobrenome());
                     viewModel.dataNascimento(
                         viewModel.formataDataList(pessoa.DataNascimento)
                     );
-                    console.log("data: " + viewModel.dataNascimento());
                     viewModel.estadoCivil(pessoa.EstadoCivil);
-                    console.log("estado civil: " + viewModel.estadoCivil());
                     viewModel.cpf(pessoa.Cpf);
-                    console.log("cpf: " + viewModel.cpf());
                     viewModel.rg(pessoa.Rg);
-                    console.log("Nome: " + viewModel.id());
                 },
                 error: function (xhr, status, error) {
                     alert("Erro ao carregar pessoa: " + error);
@@ -171,21 +164,17 @@ $(document).ready(function () {
             // checa se esta no formato dd/mm/yyyy
             var regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
             var match = dateString.match(regex);
-
             if (match) {
                 var dia = match[1];
                 var mes = match[2];
                 var ano = match[3];
                 return ano + '-' + mes + '-' + dia;
             } else {
-                // If not in dd/mm/yyyy format, assume it's a timestamp and process as before
                 var timestamp = parseInt(dateString.replace(/\/Date\((\d+)\)\//, '$1'), 10);
                 var date = new Date(timestamp);
-
-                ano = date.getFullYear();
-                mes = ("0" + (date.getMonth() + 1)).slice(-2);
-                dia = ("0" + date.getDate()).slice(-2);
-
+                var ano = date.getFullYear();
+                var mes = ("0" + (date.getMonth() + 1)).slice(-2);
+                var dia = ("0" + date.getDate()).slice(-2);
                 return ano + '-' + mes + '-' + dia;
             }
         },
